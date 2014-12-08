@@ -65,6 +65,7 @@ public class ExcelImporter extends Application {
 
         clearForm.setOnAction(event -> {
             fileList.clear();
+            this.vBox.getChildren().clear();
             importFiles.setDisable(true);
         });
 
