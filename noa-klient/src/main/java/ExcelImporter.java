@@ -79,8 +79,9 @@ public class ExcelImporter extends Application {
                 new File(System.getProperty("user.home"))
         );
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("XLS", "*.xls"),
-                new FileChooser.ExtensionFilter("XLSX", "*.xlsx")
+                new FileChooser.ExtensionFilter("Alle filer", "*.*"),
+                new FileChooser.ExtensionFilter("Excel old", "*.xls"),
+                new FileChooser.ExtensionFilter("Excel", "*.xlsx")
         );
     }
 }
