@@ -30,25 +30,25 @@ public class ImportApplikasjon extends Application {
         launch(args);
     }
 
-    Button selectFiles;
-    Button importFiles;
-    Button clearForm;
-    Stage primaryStage;
-    List<File> fileList;
-    BorderPane bp = null;
-    VBox vBox;
+    Button velgFiler;
+    Button importerFiler;
+    Button reset;
+    Stage hovedScene;
+    List<File> filer;
+    BorderPane grensePane = null;
+    VBox vertikalBoks;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        this.primaryStage = primaryStage;
+        this.hovedScene = primaryStage;
         Group root = new Group();
-        bp = new BorderPane();
-        fileList = new LinkedList<>();
+        grensePane = new BorderPane();
+        filer = new LinkedList<>();
 
         final FileChooser fileChooser = new FileChooser();
-        selectFiles = new Button("Velg filer for import");
+        velgFiler = new Button("Velg filer for import");
 
-        selectFiles.setOnAction(
+        velgFiler.setOnAction(
                 e -> {
                     configureFileChooser(fileChooser);
                     List<File> list =
@@ -57,34 +57,33 @@ public class ImportApplikasjon extends Application {
                         addFiles(list);
                     }
                 });
-        importFiles = new Button("Importer filer");
-        importFiles.setDisable(true);
-        clearForm = new Button("Reset");
+        importerFiler = new Button("Importer filer");
+        importerFiler.setDisable(true);
+        reset = new Button("Reset");
 
-        clearForm.setOnAction(event -> {
-            fileList.clear();
-            this.vBox.getChildren().clear();
-            importFiles.setDisable(true);
+        reset.setOnAction(event -> {
+            filer.clear();
+            this.vertikalBoks.getChildren().clear();
+            importerFiler.setDisable(true);
         });
 
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(selectFiles);
-        bp.setTop(selectFiles);
+        vBox.getChildren().addAll(velgFiler);
+
+        grensePane.setTop(velgFiler);
         HBox bottomBox = new HBox();
-        bottomBox.getChildren().addAll(importFiles, clearForm);
-        bp.setBottom(bottomBox);
+        bottomBox.getChildren().addAll(importerFiler, reset);
+        grensePane.setBottom(bottomBox);
+        root.getChildren().addAll(grensePane);
 
+        ScrollPane filInfoOmraade = new ScrollPane();
+        filInfoOmraade.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        filInfoOmraade.setVmax(440);
+        filInfoOmraade.setPrefSize(750, 440);
 
-        root.getChildren().addAll(bp);
-
-        ScrollPane s1 = new ScrollPane();
-        s1.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-
-        s1.setVmax(440);
-        s1.setPrefSize(750, 440);
-        this.vBox = new VBox();
-        s1.setContent(this.vBox);
-        bp.setCenter(s1);
+        this.vertikalBoks = new VBox();
+        filInfoOmraade.setContent(this.vertikalBoks);
+        grensePane.setCenter(filInfoOmraade);
 
         Scene scene = new Scene(root, 800, 600);
         primaryStage.setScene(scene);
@@ -92,27 +91,26 @@ public class ImportApplikasjon extends Application {
     }
 
     private void addFiles(List<File> files) {
-        updateFileflabel(files);
-        importFiles.setDisable(false);
+        oppdaterFilLabel(files);
+        importerFiler.setDisable(false);
     }
 
-    private void updateFileflabel(List<File> files) {
+    private void oppdaterFilLabel(List<File> files) {
         for (File f : files) {
             Label file = new Label(f.getName());
-            //Button delete = new Button("delete");
-            this.vBox.getChildren().addAll(file);
+            this.vertikalBoks.getChildren().addAll(file);
         }
-        this.fileList.addAll(files);
+        this.filer.addAll(files);
     }
 
     private static void configureFileChooser(
-            final FileChooser fileChooser) {
-        fileChooser.setTitle("Velg filer");
-        fileChooser.setInitialDirectory(
+            final FileChooser filVelger) {
+        filVelger.setTitle("Velg filer");
+        filVelger.setInitialDirectory(
                 new File(System.getProperty("user.home"))
         );
 
-        fileChooser.getExtensionFilters().addAll(
+        filVelger.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Excel", "*.xls", "*.xlsx")
         );
     }
