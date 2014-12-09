@@ -1,6 +1,4 @@
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -56,7 +54,7 @@ public class ExcelImporter extends Application {
                     List<File> list =
                             fileChooser.showOpenMultipleDialog(primaryStage);
                     if (list != null) {
-                        openFile(list);
+                        addFiles(list);
                     }
                 });
         importFiles = new Button("Importer filer");
@@ -93,12 +91,12 @@ public class ExcelImporter extends Application {
         primaryStage.show();
     }
 
-    private void openFile(List<File> files) {
-        updateVbox(files);
+    private void addFiles(List<File> files) {
+        updateFileflabel(files);
         importFiles.setDisable(false);
     }
 
-    private void updateVbox(List<File> files) {
+    private void updateFileflabel(List<File> files) {
         for (File f : files) {
             Label file = new Label(f.getName());
             //Button delete = new Button("delete");
@@ -113,10 +111,9 @@ public class ExcelImporter extends Application {
         fileChooser.setInitialDirectory(
                 new File(System.getProperty("user.home"))
         );
+
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Alle filer", "*.*"),
-                new FileChooser.ExtensionFilter("Excel old", "*.xls"),
-                new FileChooser.ExtensionFilter("Excel", "*.xlsx")
+                new FileChooser.ExtensionFilter("Excel", "*.xls", "*.xlsx")
         );
     }
 }
