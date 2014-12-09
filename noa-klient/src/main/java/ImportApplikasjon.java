@@ -18,9 +18,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by arne-richard.hofsoy on 08/12/14.
+ * Klassen starter en javaFx2 spring applikasjon
+ * som gjør det mulig å importere excel filer
+ * i forbindelse med nettavregningsområder.
  */
-
 @Controller
 @EnableAutoConfiguration
 public class ImportApplikasjon extends Application {

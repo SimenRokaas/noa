@@ -12,10 +12,10 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @EnableAutoConfiguration
-public class Main extends Application {
+public class Applikasjon extends Application {
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(Main.class, args);
+        SpringApplication.run(Applikasjon.class, args);
         launch(args);
     }
 
