@@ -9,7 +9,8 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by arne-richard.hofsoy on 09/12/14.
+ * Klassen skal importere data fra exel ark og skrive til databasen de
+ * objekter som opprettes.
  */
 public class Importerer {
 
