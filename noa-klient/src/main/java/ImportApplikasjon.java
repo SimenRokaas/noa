@@ -23,10 +23,10 @@ import java.util.List;
 
 @Controller
 @EnableAutoConfiguration
-public class ExcelImporter extends Application {
+public class ImportApplikasjon extends Application {
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(ExcelImporter.class, args);
+        SpringApplication.run(ImportApplikasjon.class, args);
         launch(args);
     }
 
