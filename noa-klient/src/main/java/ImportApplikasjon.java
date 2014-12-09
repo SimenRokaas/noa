@@ -9,6 +9,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.log4j.spi.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
@@ -22,9 +24,10 @@ import java.util.List;
  * som gjør det mulig å importere excel filer
  * i forbindelse med nettavregningsområder.
  */
-@Controller
 @EnableAutoConfiguration
 public class ImportApplikasjon extends Application {
+
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(ImportApplikasjon.class);
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(ImportApplikasjon.class, args);
@@ -41,6 +44,7 @@ public class ImportApplikasjon extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        logger.info("Starting");
         this.hovedScene = primaryStage;
         Group root = new Group();
         grensePane = new BorderPane();
