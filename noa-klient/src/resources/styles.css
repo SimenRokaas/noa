@@ -1,0 +1,56 @@
+
+.button {
+    -fx-padding: 15 22 15 22;
+    -fx-border-color: #e2e2e2;
+    -fx-border-width: 2;
+    -fx-background-radius: 0;
+    -fx-background-color: #B0B0B0 ;
+    -fx-font-size: 11pt;
+    -fx-text-fill: #d8d8d8;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.button:hover {
+    -fx-background-color: #9ACD32;
+}
+
+.button:selected {
+    -fx-background-color: #9ACD32;
+}
+
+.toggle-button {
+    -fx-padding: 15 22 15 22;
+    -fx-border-color: #e2e2e2;
+    -fx-border-width: 2;
+    -fx-background-radius: 0;
+    -fx-background-color: #B0B0B0 ;
+    -fx-font-size: 11pt;
+    -fx-text-fill: #d8d8d8;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.toggle-button:hover {
+    -fx-background-color: #9ACD32;
+}
+
+.toggle-button:selected {
+    -fx-background-color: #9ACD32;
+}
+
+.toppMeny {
+    -fx-border-color: #e2e2e2;
+    -fx-background-color: #C0C0C0;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.venstreMeny {
+    -fx-border-color: #e2e2e2;
+    -fx-background-color: #C0C0C0;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+    -fx-min-width: 100%;
+}
+
+.toppInnhold {
+    -fx-fit-to-width: 100%;
+    -fx-min-width: 100%;
+}

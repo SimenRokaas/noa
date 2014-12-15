@@ -1,19 +1,18 @@
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.apache.log4j.spi.LoggerFactory;
+import no.statnett.noa.excel.Importerer;
 import org.slf4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.stereotype.Controller;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -28,7 +27,8 @@ import java.util.List;
 public class ImportApplikasjon extends Application {
 
     private static final Logger logger = org.slf4j.LoggerFactory.getLogger(ImportApplikasjon.class);
-
+    private EventHandler<ActionEvent> importerFilerHandler;
+    
     public static void main(String[] args) throws Exception {
         SpringApplication.run(ImportApplikasjon.class, args);
         launch(args);
@@ -41,10 +41,16 @@ public class ImportApplikasjon extends Application {
     List<File> filer;
     BorderPane grensePane = null;
     VBox vertikalBoks;
+    VBox loggBox;
+    Importerer importerer;
+    List<String> loggInnhold;
+    Tab filerTab;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         logger.info("Starting");
+        importerer = new Importerer();
+        loggInnhold = new LinkedList<>();
         this.hovedScene = primaryStage;
         Group root = new Group();
         grensePane = new BorderPane();
@@ -55,7 +61,7 @@ public class ImportApplikasjon extends Application {
 
         velgFiler.setOnAction(
                 e -> {
-                    configureFileChooser(fileChooser);
+                    konfigurerFilVelger(fileChooser);
                     List<File> list =
                             fileChooser.showOpenMultipleDialog(primaryStage);
                     if (list != null) {
@@ -63,13 +69,17 @@ public class ImportApplikasjon extends Application {
                     }
                 });
         importerFiler = new Button("Importer filer");
+        createHandlers();
+        importerFiler.setOnAction(importerFilerHandler);
         importerFiler.setDisable(true);
         reset = new Button("Reset");
 
         reset.setOnAction(event -> {
             filer.clear();
             this.vertikalBoks.getChildren().clear();
+            this.loggBox.getChildren().clear();
             importerFiler.setDisable(true);
+            filerTab.getContent().requestFocus();
         });
 
         VBox vBox = new VBox();
@@ -81,14 +91,35 @@ public class ImportApplikasjon extends Application {
         grensePane.setBottom(bottomBox);
         root.getChildren().addAll(grensePane);
 
+
+
         ScrollPane filInfoOmraade = new ScrollPane();
         filInfoOmraade.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         filInfoOmraade.setVmax(440);
         filInfoOmraade.setPrefSize(750, 440);
 
+
+        TabPane tabPane = new TabPane();
+        filerTab = new Tab("Filer");
+        filerTab.setContent(filInfoOmraade);
+        filerTab.setClosable(false);
+
+        ScrollPane loggInfoOmraade = new ScrollPane();
+        loggInfoOmraade.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        loggInfoOmraade.setVmax(440);
+        loggInfoOmraade.setPrefSize(750, 440);
+
+        Tab logTab = new Tab("Logg");
+        logTab.setContent(loggInfoOmraade);
+        logTab.setClosable(false);
+
+        tabPane.getTabs().addAll(filerTab, logTab);
+
         this.vertikalBoks = new VBox();
         filInfoOmraade.setContent(this.vertikalBoks);
-        grensePane.setCenter(filInfoOmraade);
+        this.loggBox = new VBox();
+        loggInfoOmraade.setContent(this.loggBox);
+        grensePane.setCenter(tabPane);
 
         Scene scene = new Scene(root, 800, 600);
         primaryStage.setScene(scene);
@@ -108,9 +139,16 @@ public class ImportApplikasjon extends Application {
         this.filer.addAll(files);
     }
 
-    private static void configureFileChooser(
-            final FileChooser filVelger) {
+    private void oppdaterLoggLabel(List<String> logg) {
+        for (String s : logg) {
+            Label file = new Label(s);
+            this.loggBox.getChildren().addAll(file);
+        }
+    }
+
+    private static void konfigurerFilVelger(final FileChooser filVelger) {
         filVelger.setTitle("Velg filer");
+
         filVelger.setInitialDirectory(
                 new File(System.getProperty("user.home"))
         );
@@ -118,5 +156,17 @@ public class ImportApplikasjon extends Application {
         filVelger.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Excel", "*.xls", "*.xlsx")
         );
+    }
+
+    private void createHandlers() {
+        importerFilerHandler = actionEvent -> {
+            for (File f : filer) {
+                importerer.importer(f);
+                oppdaterLoggLabel(importerer.getLogg());
+            }
+            this.vertikalBoks.getChildren().clear();
+            filer.clear();
+        };
+
     }
 }

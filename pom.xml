@@ -13,6 +13,8 @@
         <name>Simen Røkaas</name>
     </organization>
 
+
+
     <modules>
         <module>noa-kjerne</module>
         <module>noa-grensesnitt</module>
@@ -82,6 +84,7 @@
     </dependencies>
 
     <build>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
